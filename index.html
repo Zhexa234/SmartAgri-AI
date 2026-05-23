@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h3 class="mb-4">AI Agriculture Dashboard</h3>
+
+<div class="row g-4">
+
+<div class="col-md-4">
+<div class="card-dark">
+<div class="kpi-title">MODEL TYPE</div>
+<div class="kpi-number">Extra Trees</div>
+<p>Crop Yield Predictor</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card-dark">
+<div class="kpi-title">FERTILIZER MODEL</div>
+<div class="kpi-number">GaussianNB</div>
+<p>Nutrient Recommendation</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card-dark">
+<div class="kpi-title">DATA SOURCE</div>
+<div class="kpi-number">Kaggle</div>
+<p>Agriculture dataset</p>
+</div>
+</div>
+
+</div>
+
+<div class="row g-4 mt-4">
+
+<div class="col-md-6">
+<div class="card-dark">
+<h5>System Overview</h5>
+<p>This AI platform predicts crop yield and recommends fertilizers using machine learning.</p>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card-dark">
+<h5>Capabilities</h5>
+<ul>
+<li>Crop Yield Prediction</li>
+<li>Fertilizer Recommendation</li>
+<li>Feature Importance Analytics</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+{% endblock %}

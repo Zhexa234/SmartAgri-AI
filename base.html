@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>{% block title %}{% endblock %}</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+
+</head>
+
+<body>
+
+<!-- PARTICLE BACKGROUND -->
+<div id="particles-js"></div>
+
+<div class="dashboard-container">
+
+<div class="sidebar">
+
+<h3>SmartAgri AI</h3>
+
+<!-- COMMON -->
+<a href="/dashboard">Dashboard</a>
+
+<!-- USER ONLY -->
+{% if session.get('role') == 'user' %}
+<a href="/yield">Yield Prediction</a>
+<a href="/fertilizer">Fertilizer</a>
+{% endif %}
+
+{% if session.get('role') == 'admin' %}
+<a href="/history">System History</a>
+{% else %}
+<a href="/history">My History</a>
+{% endif %}
+
+<!-- ANALYTICS (BOTH CAN SEE) -->
+<a href="/charts">Analytics</a>
+
+<!-- ADMIN ONLY -->
+{% if session.get('role') == 'admin' %}
+<a href="/admin">Admin Panel</a>
+{% endif %}
+
+<!-- LOGOUT -->
+<a href="/logout">Logout</a>
+
+</div>
+
+<div class="main">
+{% block content %}{% endblock %}
+</div>
+
+</div>
+
+<script>
+
+particlesJS("particles-js", {
+"particles": {
+"number": { "value": 80 },
+"color": { "value": "#22c55e" },
+"shape": { "type": "circle" },
+"opacity": { "value": 0.3 },
+"size": { "value": 3 },
+"line_linked": {
+"enable": true,
+"distance": 150,
+"color": "#22c55e",
+"opacity": 0.2,
+"width": 1
+},
+"move": {
+"enable": true,
+"speed": 2
+}
+},
+"interactivity": {
+"events": {
+"onhover": { "enable": true, "mode": "repulse" }
+},
+"modes": {
+"repulse": { "distance": 100 }
+}
+}
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+<title>Verify OTP</title>
+
+<style>
+body{
+background: linear-gradient(135deg,#020617,#022c22);
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+font-family:Segoe UI;
+}
+
+.card{
+background:#0f172a;
+padding:40px;
+border-radius:15px;
+width:350px;
+text-align:center;
+box-shadow:0 0 25px rgba(34,197,94,0.4);
+}
+
+input{
+width:100%;
+padding:12px;
+margin:15px 0;
+border-radius:8px;
+border:none;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#22c55e;
+border:none;
+border-radius:8px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+a{
+color:#22c55e;
+text-decoration:none;
+}
+
+.timer{
+margin-top:10px;
+color:#94a3b8;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Verify OTP</h2>
+
+<form method="POST">
+<input name="otp" placeholder="Enter 6-digit OTP" required>
+<button>Verify</button>
+</form>
+
+<div class="timer" id="timer">Resend in 60s</div>
+
+{% if error %}
+<p style="color:red">{{ error }}</p>
+{% endif %}
+
+</div>
+
+<script>
+let time = 60;
+let timer = setInterval(()=>{
+    time--;
+    document.getElementById("timer").innerText = "Resend in " + time + "s";
+
+    if(time <= 0){
+        clearInterval(timer);
+        document.getElementById("timer").innerHTML =
+        '<a href="/resend_otp">Resend OTP</a>';
+    }
+},1000);
+</script>
+
+</body>
+</html>

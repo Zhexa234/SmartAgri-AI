@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="margin-bottom:20px;">Prediction History</h2>
+
+<div class="card">
+
+<table style="width:100%; border-collapse:collapse;">
+
+<tr style="background:#16a34a;">
+<th>User</th>
+<th>Type</th>
+<th>Input</th>
+<th>Result</th>
+</tr>
+
+{% for r in records %}
+<tr style="text-align:center; border-bottom:1px solid #334155;">
+<td>{{ r.user }}</td>
+<td>{{ r.type }}</td>
+<td>{{ r.input }}</td>
+<td>{{ r.result }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}Yield Prediction{% endblock %}
+
+{% block content %}
+
+<h3 class="mb-4">🌾 Crop Yield Prediction</h3>
+
+<div class="card-dark">
+
+<form method="POST" action="/predict_yield">
+
+<div class="row g-3">
+
+<!-- STATE -->
+<div class="col-md-3">
+<label class="form-label">State</label>
+
+<select name="state" class="form-select" required>
+
+{% for s in states %}
+<option value="{{ s }}">{{ s }}</option>
+{% endfor %}
+
+</select>
+</div>
+
+<!-- SEASON -->
+<div class="col-md-3">
+<label class="form-label">Season</label>
+
+<select name="season" class="form-select" required>
+
+{% for s in seasons %}
+<option value="{{ s }}">{{ s }}</option>
+{% endfor %}
+
+</select>
+</div>
+
+<!-- CROP -->
+<div class="col-md-3">
+<label class="form-label">Crop</label>
+
+<select name="crop" class="form-select" required>
+
+{% for c in crops %}
+<option value="{{ c }}">{{ c }}</option>
+{% endfor %}
+
+</select>
+</div>
+
+<!-- AREA -->
+<div class="col-md-3">
+<label class="form-label">Area (hectares)</label>
+
+<input
+name="area"
+type="number"
+step="any"
+class="form-control"
+min="{{ ranges.area[0] }}"
+max="{{ ranges.area[1] }}"
+required
+>
+
+<small class="text-muted">
+Range:
+{{ ranges.area[0] }}
+-
+{{ ranges.area[1] }}
+</small>
+
+</div>
+
+</div>
+
+<button class="btn btn-primary mt-4 w-100">
+Predict Yield
+</button>
+
+</form>
+
+</div>
+
+<!-- RESULT -->
+{% if prediction %}
+
+<div class="card-dark mt-4 text-center">
+
+<h5>Prediction Result</h5>
+
+<div class="kpi-number">
+{{ prediction }} KG
+</div>
+
+{% if confidence %}
+<p>Model Confidence: {{ confidence }}%</p>
+{% endif %}
+
+</div>
+
+{% endif %}
+
+<!-- DYNAMIC FILTER SCRIPT -->
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const stateSeasonMap =
+    {{ state_crop_map | tojson | safe }};
+
+    const stateSelect =
+    document.querySelector('select[name="state"]');
+
+    const seasonSelect =
+    document.querySelector('select[name="season"]');
+
+    const cropSelect =
+    document.querySelector('select[name="crop"]');
+
+    function updateYieldCrops() {
+
+        const state = stateSelect.value;
+        const season = seasonSelect.value;
+
+        // CLEAR OLD OPTIONS
+        cropSelect.innerHTML = "";
+
+        // CHECK DATA EXISTS
+        if (
+            stateSeasonMap[state] &&
+            stateSeasonMap[state][season]
+        ) {
+
+            const crops =
+            stateSeasonMap[state][season];
+
+            crops.forEach(function(crop) {
+
+                let option =
+                document.createElement("option");
+
+                option.value = crop;
+                option.textContent = crop;
+
+                cropSelect.appendChild(option);
+
+            });
+
+        }
+        else {
+
+            let option =
+            document.createElement("option");
+
+            option.textContent =
+            "No crops available";
+
+            cropSelect.appendChild(option);
+
+        }
+    }
+
+    // EVENT LISTENERS
+    stateSelect.addEventListener(
+        "change",
+        updateYieldCrops
+    );
+
+    seasonSelect.addEventListener(
+        "change",
+        updateYieldCrops
+    );
+
+    // INITIAL LOAD
+    updateYieldCrops();
+
+});
+
+</script>
+
+{% endblock %}

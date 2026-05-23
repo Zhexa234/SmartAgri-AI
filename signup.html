@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Signup</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+
+/* BACKGROUND */
+body{
+    background: radial-gradient(circle at top, #020617, #022c22);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:100vh;
+    font-family:'Segoe UI', sans-serif;
+    margin:0;
+}
+
+/* CARD */
+.card{
+    background:#0f172a;
+    padding:45px 40px;
+    border-radius:18px;
+    width:420px;
+    box-shadow:0 0 40px rgba(34,197,94,0.25);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* HEADING FIX 🔥 */
+.card h2{
+    color:#f1f5f9;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:30px;
+    letter-spacing:1px;
+}
+
+/* INPUT */
+.form-control{
+    background:#020617;
+    border:1px solid #334155;
+    color:#fff;
+    padding:12px;
+}
+
+.form-control::placeholder{
+    color:#94a3b8;
+}
+
+.form-control:focus{
+    border-color:#22c55e;
+    box-shadow:0 0 10px #22c55e;
+}
+
+/* PASSWORD BOX */
+.password-box{
+    position:relative;
+}
+
+.eye{
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:#94a3b8;
+}
+
+/* BUTTON */
+.btn-success{
+    background:#16a34a;
+    border:none;
+    font-weight:600;
+    padding:12px;
+    transition:0.3s;
+}
+
+.btn-success:hover{
+    background:#22c55e;
+    transform:scale(1.03);
+}
+
+/* CAPTCHA */
+.g-recaptcha{
+    display:flex;
+    justify-content:center;
+    margin-top:15px;
+}
+
+/* LOGIN TEXT FIX 🔥 */
+.login-text{
+    text-align:center;
+    margin-top:20px;
+    color:#94a3b8;
+}
+
+.login-text a{
+    color:#22c55e;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.login-text a:hover{
+    text-decoration:underline;
+}
+
+/* ERROR */
+.text-danger{
+    text-align:center;
+    margin-top:10px;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Create Account</h2>
+
+<form method="POST">
+
+<input class="form-control mb-3" name="username" placeholder="Username" required>
+
+<input class="form-control mb-3" type="email" name="email" placeholder="Email" required>
+
+<!-- PASSWORD -->
+<div class="password-box mb-3">
+<input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+<i class="fa fa-eye eye" onclick="togglePassword('password', this)"></i>
+</div>
+
+<!-- CONFIRM -->
+<div class="password-box mb-3">
+<input type="password" class="form-control" id="confirm" placeholder="Retype Password" required>
+<i class="fa fa-eye eye" onclick="togglePassword('confirm', this)"></i>
+</div>
+
+<!-- CAPTCHA -->
+<div class="g-recaptcha" data-sitekey="6LcC1s8sAAAAAH_Muzhem_6TCa63bJppDASkiJaM"></div>
+
+<button class="btn btn-success w-100 mt-3">Signup</button>
+
+</form>
+
+<!-- 🔥 FIXED ALIGNMENT -->
+<p class="login-text">
+Already have an account? <a href="/login">Login</a>
+</p>
+
+{% if error %}
+<p class="text-danger">{{ error }}</p>
+{% endif %}
+
+</div>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script>
+function togglePassword(id, icon){
+    let input = document.getElementById(id);
+    if(input.type === "password"){
+        input.type = "text";
+        icon.classList.replace("fa-eye","fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.replace("fa-eye-slash","fa-eye");
+    }
+}
+</script>
+
+</body>
+</html>

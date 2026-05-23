@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="margin-bottom:20px;">📊 Analytics Dashboard</h2>
+
+<div class="card-dark">
+
+<canvas id="usageChart"></canvas>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+let yieldData = {{ yield_usage | default(0) }};
+let fertData = {{ fert_usage | default(0) }};
+
+const ctx = document.getElementById('usageChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Yield Predictions', 'Fertilizer Predictions'],
+        datasets: [{
+            label: 'Usage Count',
+            data: [yieldData, fertData],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white'
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: 'white' }
+            },
+            y: {
+                ticks: { color: 'white' }
+            }
+        }
+    }
+});
+
+</script>
+
+{% endblock %}

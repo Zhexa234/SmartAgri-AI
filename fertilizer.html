@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% block title %}Fertilizer Recommendation{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+<div class="col-lg-8">
+
+<div class="card shadow-lg border-0 rounded-4 p-4">
+
+<h2 class="mb-4 text-center">
+🧪 Fertilizer Recommendation
+</h2>
+
+<form action="/predict_fertilizer" method="POST">
+
+<!-- BASIC CONDITIONS -->
+<div class="row">
+
+<!-- TEMPERATURE -->
+<div class="col-md-4 mb-3">
+<label class="form-label fw-semibold">
+Temperature (°C)
+</label>
+
+<input type="number"
+step="any"
+name="temperature"
+class="form-control"
+min="{{ ranges.temperature[0] }}"
+max="{{ ranges.temperature[1] }}"
+required>
+
+<small class="text-muted">
+Range:
+{{ ranges.temperature[0] }}
+-
+{{ ranges.temperature[1] }}
+</small>
+</div>
+
+<!-- HUMIDITY -->
+<div class="col-md-4 mb-3">
+<label class="form-label fw-semibold">
+Humidity (%)
+</label>
+
+<input type="number"
+step="any"
+name="humidity"
+class="form-control"
+min="{{ ranges.humidity[0] }}"
+max="{{ ranges.humidity[1] }}"
+required>
+
+<small class="text-muted">
+Range:
+{{ ranges.humidity[0] }}
+-
+{{ ranges.humidity[1] }}
+</small>
+</div>
+
+<!-- MOISTURE -->
+<div class="col-md-4 mb-3">
+<label class="form-label fw-semibold">
+Moisture
+</label>
+
+<input type="number"
+step="any"
+name="moisture"
+class="form-control"
+min="{{ ranges.moisture[0] }}"
+max="{{ ranges.moisture[1] }}"
+required>
+
+<small class="text-muted">
+Range:
+{{ ranges.moisture[0] }}
+-
+{{ ranges.moisture[1] }}
+</small>
+</div>
+
+</div>
+
+<!-- SOIL + CROP -->
+<div class="row">
+
+<!-- SOIL -->
+<div class="col-md-6 mb-3">
+
+<label class="form-label fw-semibold">
+Soil Type
+</label>
+
+<select name="soil"
+class="form-select"
+required>
+
+{% for s in soils %}
+<option value="{{ s }}">
+{{ s }}
+</option>
+{% endfor %}
+
+</select>
+
+</div>
+
+<!-- CROP -->
+<div class="col-md-6 mb-3">
+
+<label class="form-label fw-semibold">
+Crop Type
+</label>
+
+<select name="crop"
+class="form-select"
+required>
+
+{% for c in crops %}
+<option value="{{ c }}">
+{{ c }}
+</option>
+{% endfor %}
+
+</select>
+
+</div>
+
+</div>
+
+<!-- NPK -->
+<h5 class="mt-3">
+Nutrient Levels (NPK)
+</h5>
+
+<div class="row">
+
+<!-- N -->
+<div class="col-md-4 mb-3">
+
+<label>Nitrogen (N)</label>
+
+<input type="number"
+step="any"
+name="nitrogen"
+class="form-control"
+min="{{ ranges.nitrogen[0] }}"
+max="{{ ranges.nitrogen[1] }}"
+required>
+
+</div>
+
+<!-- K -->
+<div class="col-md-4 mb-3">
+
+<label>Potassium (K)</label>
+
+<input type="number"
+step="any"
+name="potassium"
+class="form-control"
+min="{{ ranges.potassium[0] }}"
+max="{{ ranges.potassium[1] }}"
+required>
+
+</div>
+
+<!-- P -->
+<div class="col-md-4 mb-4">
+
+<label>Phosphorous (P)</label>
+
+<input type="number"
+step="any"
+name="phosphorous"
+class="form-control"
+min="{{ ranges.phosphorous[0] }}"
+max="{{ ranges.phosphorous[1] }}"
+required>
+
+</div>
+
+</div>
+
+<button type="submit"
+class="btn btn-primary w-100 btn-lg">
+
+Recommend Fertilizer
+
+</button>
+
+</form>
+
+<!-- RESULT -->
+{% if result %}
+
+<div class="alert alert-warning mt-4 text-center fs-5">
+
+{{ result }}
+
+</div>
+
+{% endif %}
+
+</div>
+</div>
+</div>
+
+<!-- DYNAMIC FILTER -->
+<script>
+
+const soilCropMap =
+{{ soil_crop_map | tojson | safe }};
+
+const soilSelect =
+document.querySelector(
+'select[name="soil"]'
+);
+
+const cropSelect =
+document.querySelector(
+'select[name="crop"]'
+);
+
+function updateCrops() {
+
+    const selectedSoil =
+    soilSelect.value;
+
+    cropSelect.innerHTML = "";
+
+    if (soilCropMap[selectedSoil]) {
+
+        soilCropMap[selectedSoil]
+        .forEach(crop => {
+
+            let option =
+            document.createElement(
+            "option"
+            );
+
+            option.value = crop;
+            option.text = crop;
+
+            cropSelect.appendChild(
+            option
+            );
+
+        });
+
+    }
+}
+
+soilSelect.addEventListener(
+'change',
+updateCrops
+);
+
+window.onload = updateCrops;
+
+</script>
+
+{% endblock %}
